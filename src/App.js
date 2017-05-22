@@ -11,6 +11,8 @@ const imageDatas = (function(imageArr){
     return imageArr;
 })(require('./data/imageDatas.json'));
 
+const bgimgurl = require('./images/bg.jpg');
+
 class ImgFigure extends Component {
     /**
      * imgfigure的点击处理方法
@@ -150,13 +152,20 @@ class App extends Component {
                 arrange={this.state.imgsArrangeArr[key]}
                 reinverse={this.reInverse(key)}
                 center={this.center(key)} />);
+            controllerUnits.push(<ControllerUnit key={key} />)
         }.bind(this));
+        var styleObj = {
+            background: "url(" + bgimgurl + ")",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover"
+        }
         return (
             <section className="stage" ref="stage">
-                <section className="img-sec">
+                <section style={styleObj} className="img-sec">
                     {imgFigures}
                 </section>
                 <nav className="controller-nav">
+                    {controllerUnits}
                 </nav>
             </section>
         );
@@ -275,6 +284,18 @@ class App extends Component {
      */
     get30DegRandom(){
         return (Math.random() > 0.5 ? '' : '-') + Math.floor(Math.random() * 30);
+    }
+}
+
+class ControllerUnit extends Component {
+    handleClick(e){
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    render(){
+        return (
+            <span className="controller-unit" onClick={this.handleClick.bind(this)}><i className="icon iconfont"></i></span>
+        )
     }
 }
 
