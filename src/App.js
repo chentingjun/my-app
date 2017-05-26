@@ -12,6 +12,8 @@ const imageDatas = (function(imageArr){
 })(require('./data/imageDatas.json'));
 
 const bgimgurl = require('./images/bg.jpg');
+const jiantou = <i className="icon-iconfont">&#xe758;</i>;
+/*const jiantou = <i className="icon-turn">&#xe6e1;</i>;*/
 
 class ImgFigure extends Component {
     /**
@@ -35,7 +37,7 @@ class ImgFigure extends Component {
         if(this.props.arrange.rotate){
             var fixArr = ['MozTransform','WebkitTransform','msTransform','transform'];
             fixArr.forEach(function(v,k){
-                styleObj[v] = "rotate(" + this.props.arrange.rotate + "deg)";
+                styleObj[v] = "rotateY(" + this.props.arrange.rotate + "deg)";
             }.bind(this));
         }
         if(this.props.arrange.isCenter){
@@ -152,7 +154,10 @@ class App extends Component {
                 arrange={this.state.imgsArrangeArr[key]}
                 reinverse={this.reInverse(key)}
                 center={this.center(key)} />);
-            controllerUnits.push(<ControllerUnit key={key} />)
+            controllerUnits.push(<ControllerUnit key={key}
+                arrange={this.state.imgsArrangeArr[key]}
+                inverse={this.reInverse(key)}
+                center={this.center(key)} />)
         }.bind(this));
         var styleObj = {
             background: "url(" + bgimgurl + ")",
@@ -227,13 +232,31 @@ class App extends Component {
         }.bind(this));
 
         //布局两侧的图片
+        var ln = 0;
+        var rn = 0;
         for(var i=0,j=imgsArrangeArr.length/2; i<imgsArrangeArr.length; i++){
+            var flag = true;//往左侧加图片
             var hPosRangeLORX = null;
             //前一半在左边，后一半在右边
-            if(i < j){
-                hPosRangeLORX = hPosRangeLeftSecX;
+            if(ln >= j || rn >= j){
+                flag = false;
+            }
+            if(flag){
+                if(Math.random() > 0.5){
+                    hPosRangeLORX = hPosRangeLeftSecX;
+                    ln++;
+                }else{
+                    hPosRangeLORX = hPosRangeRightSecX;
+                    rn++;
+                }
             }else{
-                hPosRangeLORX = hPosRangeRightSecX;
+                if(ln >= j){
+                    hPosRangeLORX = hPosRangeRightSecX;
+                    rn++;
+                }else{
+                    hPosRangeLORX = hPosRangeLeftSecX;
+                    ln++;
+                }
             }
             imgsArrangeArr[i] = {
                 pos: {
@@ -289,12 +312,29 @@ class App extends Component {
 
 class ControllerUnit extends Component {
     handleClick(e){
+        //如果点击的是当前正在选中的态的图片，则翻转图片，否则将对应的图片居中
+        if(this.props.arrange.isCenter){
+            this.props.inverse();
+        }else{
+            this.props.center();
+        }
         e.preventDefault();
         e.stopPropagation();
     }
     render(){
+        var txthtml = '';
+        var controllerClassName = 'controller-unit';
+        //如果对应图片是居中的，显示控制按钮的居中态
+        if(this.props.arrange.isCenter){
+            txthtml = <i className="icon-iconfont">&#xe758;</i>;
+            controllerClassName += ' is-center';
+            //如果对应图片是翻转的，显示控制按钮的翻转态
+            if(this.props.arrange.isInverse){
+                controllerClassName += ' is-inverse';
+            }
+        }
         return (
-            <span className="controller-unit" onClick={this.handleClick.bind(this)}><i className="icon iconfont"></i></span>
+            <span className={controllerClassName} onClick={this.handleClick.bind(this)}>{txthtml}</span>
         )
     }
 }

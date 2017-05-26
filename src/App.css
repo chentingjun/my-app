@@ -1,19 +1,26 @@
 @font-face {
-  font-family: "icons-trun";
-  src: url("./fonts/icons/turn.eot") format("embedded-opentype"), url("./fonts/icons/turn.woff") format("woff"), url("./fonts/icons/turn.ttf") format("turetype"), url("./fonts/icons/turn.svg") format("svg");
+  font-family: 'icon-iconfont';
+  src: url("./fonts/icons/iconfont.eot");
+  src: url("./fonts/icons/iconfont.eot?#iefix") format("embedded-opentype"), url("./fonts/icons/iconfont.woff") format("woff"), url("./fonts/icons/iconfont.ttf") format("truetype"), url("./fonts/icons/iconfont.svg") format("svg");
 }
-.icon {
-  font-size: 42px;
-  line-height: 100px;
-  margin: 10px 0;
-  color: #333;
-  -webkit-transition: font-size 0.25s ease-out 0s;
-  -moz-transition: font-size 0.25s ease-out 0s;
-  transition: font-size 0.25s ease-out 0s;
+@font-face {
+  font-family: 'icon-turn';
+  src: url("./fonts/icons/turn.eot");
+  src: url("./fonts/icons/turn.eot?#iefix") format("embedded-opentype"), url("./fonts/icons/turn.woff") format("woff"), url("./fonts/icons/turn.ttf") format("truetype"), url("./fonts/icons/turn.svg") format("svg");
+}
+.icon-iconfont {
+  color: #fff;
+  font-family: "icon-iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.iconfont {
-  font-family: "icons-trun" !important;
+.icon-turn {
+  color: #fff;
+  font-family: "icon-turn" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -26,6 +33,10 @@ html, body {
   height: 100%;
   /*background-color: #222;*/
   background: url(./images/bg.jpg);
+}
+
+#root {
+  height: 100%;
 }
 
 .content {
@@ -48,9 +59,12 @@ html, body {
   height: 100%;
   overflow: hidden;
   background-color: #ddd;
-  -webkit-perspective: 1400;
-  -moz-perspective: 1400;
-  perspective: 1400;
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  perspective: 1000;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 .img-figure {
   position: absolute;
@@ -93,12 +107,9 @@ html, body {
   background-color: #fff;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  -webkit-transform: translateZ(-1px);
-  -moz-transform: translateZ(-1px);
-  transform: translateZ(-1px);
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  transform: rotateY(180deg);
+  -webkit-transform: rotateY(-180deg) translateZ(1px);
+  -moz-transform: rotateY(-180deg) translateZ(1px);
+  transform: rotateY(-180deg) translateZ(1px);
 }
 
 .img-figure img {
@@ -130,7 +141,9 @@ figcaption .img-title {
   margin: 0 5px;
   width: 30px;
   height: 30px;
+  line-height: 30px;
   text-align: center;
+  vertical-align: middle;
   cursor: pointer;
   background-color: #aaa;
   -moz-border-radius: 50%;
@@ -138,6 +151,11 @@ figcaption .img-title {
   -webkit-transform: scale(50%);
   -moz-transform: scale(50%);
   transform: scale(0.5);
+  -webkit-transition: background-color .3s, -webkit-transform .6s ease-in-out;
+  transition: background-color .3s, -webkit-transform .6s ease-in-out;
+  -moz-transition: transform .6s ease-in-out, background-color .3s, -moz-transform .6s ease-in-out;
+  transition: transform .6s ease-in-out, background-color .3s;
+  transition: transform .6s ease-in-out, background-color .3s, -webkit-transform .6s ease-in-out, -moz-transform .6s ease-in-out;
 }
 .controller-unit.is-center {
   background-color: #888;
@@ -145,10 +163,11 @@ figcaption .img-title {
   -moz-transform: scale(1);
   transform: scale(1);
 }
-.controller-unit.is-center::after {
-  color: #fff;
-  font-family: "icons-turn";
-  content: "&#xe6e1;";
+.controller-unit.is-inverse {
+  background-color: #555;
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 /*controller -- end*/
